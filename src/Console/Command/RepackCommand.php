@@ -32,6 +32,7 @@ class RepackCommand extends Command
             ->setAliases(['repack'])
             ->addOption('app-name', null, InputOption::VALUE_REQUIRED, 'The name of the phar application', 'my-app')
             ->addOption('app-version', null, InputOption::VALUE_REQUIRED, 'The version of the phar application', '1.0.0')
+            ->addOption('box', null, InputOption::VALUE_REQUIRED, 'The box executable path', null)
             ->addOption('os', null, InputOption::VALUE_REQUIRED, 'The targeted OS', 'linux', ['linux', 'darwin', 'windows'])
             ->setHidden(true)
         ;
@@ -49,7 +50,7 @@ class RepackCommand extends Command
         }
 
         $finder = new ExecutableFinder();
-        $box = $finder->find('box');
+        $box = $finder->find(name: 'box', default: $input->getOption('box'));
         if (!$box) {
             throw new \RuntimeException('Could not find box. Please install it: https://github.com/box-project/box/blob/main/doc/installation.md#installation.');
         }
